@@ -14,8 +14,17 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include, re_path
+from django.conf.urls.static import static
+from django.conf import settings
+from fileconvert import views
+from django.http import HttpResponseRedirect
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-]
+    path('', views.index, name='main-view'),
+    re_path(r'.*css/bootstrap-cerulean.min.css$',
+    lambda request: HttpResponseRedirect(
+        '/static/charisma/css/bootstrap-cerulean.min.css')),
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
